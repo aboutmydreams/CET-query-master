@@ -1,0 +1,78 @@
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.home-input-box {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.home-input-box input {
+    height: 30px;
+    width: 70%;
+}
+
+.home-btn-box {
+    background: url('../assets/homeBg.png') 42%/72% no-repeat;
+    height: 60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.home-btn-box button {
+    width: 60%;
+    height: 20%;
+    margin-bottom: 0.81rem;
+    border-radius: 60px;
+    outline: none;
+    border: 0;
+    font-family: PingFangSC;
+    font-size: 15px;
+    color: rgb(255,255,255);
+    transform: scale(1.2);
+    display: inherit;
+}
+
+.home-btn-box button span {
+    margin:0 auto;
+    width: 5.85rem;
+    height: 1.16rem;
+    line-height: 10px;
+  }
+
+.home-btn-query {
+    background: url('../assets/btn-query.png') 100%/100% no-repeat ;
+}
+.home-btn-toFind {
+    background: url('../assets/btn-find.png') 100%/100% no-repeat; 
+}
+
+.input-box {
+    background-color: #fff;
+    height: 3rem;
+    width: 80%;
+    border-radius: 100px;
+    box-shadow: 0 0.3rem 0.1rem rgba(108,131,194,0.08);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.input-box img {
+    height: 1.96rem;
+}
+
+.input-box input {
+    width: 60%;
+    height: 1.42rem;
+    border: none;
+    background-color: #fff;
+
+}
