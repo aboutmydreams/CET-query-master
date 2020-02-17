@@ -13,4 +13,14 @@ export class Input extends React.Component {
       </div>
     )
   }
-} 
+}
+
+export class CodeInput extends React.Component {
+  render() {
+    return (
+      <div className="input-code-box">
+        <input placeholder='验证码'/>
+      </div>
+    )
+  }
+}

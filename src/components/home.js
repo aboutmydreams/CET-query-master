@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 import zkzIcon from '../assets/zkzIcon.png'
 import nameIcon from '../assets/nameIcon.png'
 
-import { Input } from './input';
+import { Input, CodeInput } from './input';
 import './components.css';
 
 
@@ -18,6 +18,9 @@ export class Home extends React.Component {
         <div className="home-input-box">
           <Input icon={zkzIcon} placeholder="输入准考证号" />
           <Input icon={nameIcon} placeholder="输入姓名" />
+          <div className="home-code-box" >
+            <CodeInput />
+          </div>
         </div>
         <div className="home-btn-box">
           <button className='home-btn-query' >

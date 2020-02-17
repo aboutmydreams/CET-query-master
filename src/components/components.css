@@ -54,15 +54,26 @@
     background: url('../assets/btn-find.png') 100%/100% no-repeat; 
 }
 
-.input-box {
-    background-color: #fff;
-    height: 3rem;
+.home-code-box {
     width: 80%;
+}
+
+.input-box, .input-code-box {
+    height: 3rem;
+    background-color: #fff;
     border-radius: 100px;
     box-shadow: 0 0.3rem 0.1rem rgba(108,131,194,0.08);
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+}
+
+.input-box {
+    width: 80%;
+}
+
+.input-code-box {
+    width: 35%;
 }
 
 .input-box img {
@@ -74,5 +85,11 @@
     height: 1.42rem;
     border: none;
     background-color: #fff;
+}
 
+.input-code-box input{
+    width: 70%;
+    height: 1.42rem;
+    border: none;
+    background-color: #fff;
 }
