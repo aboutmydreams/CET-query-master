@@ -1,8 +1,11 @@
 import React from 'react';
 
 import logo from '../assets/logo.png';
-import zkzIcon from '../assets/zkzIcon.png'
-import nameIcon from '../assets/nameIcon.png'
+import zkzIcon from '../assets/home-zkzh-icon.png';
+import nameIcon from '../assets/home-name-icon.png';
+import codeIcon from '../assets/home-code-icon.png'
+import code from '../assets/code.png'
+
 
 import { Input, CodeInput } from './input';
 import './components.css';
@@ -11,16 +14,14 @@ import './components.css';
 export class Home extends React.Component {
   render() {
     return (
-      <div>
+      <div className="home-box" >
         <div className="logo">
           <img src={logo} />
         </div>
         <div className="home-input-box">
           <Input icon={zkzIcon} placeholder="输入准考证号" />
           <Input icon={nameIcon} placeholder="输入姓名" />
-          <div className="home-code-box" >
-            <CodeInput />
-          </div>
+          <CodeInput icon={codeIcon} />
         </div>
         <div className="home-btn-box">
           <button className='home-btn-query' >

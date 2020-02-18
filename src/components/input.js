@@ -19,6 +19,9 @@ export class CodeInput extends React.Component {
   render() {
     return (
       <div className="input-code-box">
+        <div className="input-icon-box">
+          <img src={this.props.icon} />
+        </div>
         <input placeholder='验证码'/>
       </div>
     )

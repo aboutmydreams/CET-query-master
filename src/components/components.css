@@ -1,11 +1,20 @@
+
+.home-box {
+    /* background-color: pink; */
+    /* display: contents; */
+    /* align-self: center;
+    flex-direction: column;
+    align-items: center; */
+    /* height: 70vh; */
+    width: 76vw;
+}
+
 .logo img {
-    width: 100%;
-    height: 100%;
+    width: 50vw;
 }
 
 .home-input-box {
-    width: 100%;
-    height: 200px;
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -14,16 +23,16 @@
 
 .home-input-box input {
     height: 30px;
-    width: 70%;
+    width: 80%;
 }
 
 .home-btn-box {
-    background: url('../assets/homeBg.png') 42%/72% no-repeat;
-    height: 60vw;
+    height: 50vw;
+    padding-left: 8vw;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .home-btn-box button {
@@ -44,40 +53,40 @@
     margin:0 auto;
     width: 5.85rem;
     height: 1.16rem;
-    line-height: 10px;
+    line-height: 16px;
   }
 
 .home-btn-query {
-    background: url('../assets/btn-query.png') 100%/100% no-repeat ;
+    background: #F88383 ;
+    box-shadow: 0 0.3rem 0.5rem rgba(39, 39, 39, 0.16);
 }
 .home-btn-toFind {
-    background: url('../assets/btn-find.png') 100%/100% no-repeat; 
-}
-
-.home-code-box {
-    width: 80%;
+    background: rgba(82, 180, 245, 0.726);
+    box-shadow: 0 0.3rem 0.5rem rgba(39, 39, 39, 0.16);
 }
 
 .input-box, .input-code-box {
     height: 3rem;
     background-color: #fff;
     border-radius: 100px;
-    box-shadow: 0 0.3rem 0.1rem rgba(108,131,194,0.08);
+    box-shadow: 0 0.3rem 0.1rem rgba(48,48,48,0.16);
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 
 .input-box {
-    width: 80%;
+    width: 60vw;
+    margin-top: 3vh;
 }
 
 .input-code-box {
-    width: 35%;
+    width: 60vw;
+    margin-top: 3vh;
 }
 
 .input-box img {
-    height: 1.96rem;
+    height: 0.9rem;
 }
 
 .input-box input {
@@ -88,7 +97,7 @@
 }
 
 .input-code-box input{
-    width: 70%;
+    width: 40%;
     height: 1.42rem;
     border: none;
     background-color: #fff;
