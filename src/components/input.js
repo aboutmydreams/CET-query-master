@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 
 
@@ -23,17 +24,29 @@ export class CodeInput extends React.Component {
     };
 
     this.getCode =this.getCode.bind(this);
+    this.changeCode =this.changeCode.bind(this);
   }
 
   getCode() {
     console.log('get code')
     this.setState({
-      hasCode: true
+      hasCode: true,
+      codeImg: this.props.code
     })
   }
 
-  changeCode() {
-    console.log('change code')
+  async changeCode() {
+    console.log('change code');
+    const res = await axios({
+      url:'/code',
+      method:"get"
+    });
+    console.log(res.data);
+    const codeImg = res.data;
+    this.setState({
+      codeImg
+    })
+    console.log('chang end')
   }
 
   render() {
@@ -41,7 +54,7 @@ export class CodeInput extends React.Component {
     let codeButton;
     if(hasCode) {
         codeButton = <button onClick = {this.changeCode}>
-                      <img className="input-code-img" src={this.props.code}/>
+                      <img className="input-code-img" src={this.state.code}/>
                     </button>;
     } else {
       codeButton =  <button className="input-code-btn" onClick = {this.getCode}>点此获取</button>;
