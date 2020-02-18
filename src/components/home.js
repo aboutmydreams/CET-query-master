@@ -21,7 +21,7 @@ export class Home extends React.Component {
         <div className="home-input-box">
           <Input icon={zkzIcon} placeholder="输入准考证号" />
           <Input icon={nameIcon} placeholder="输入姓名" />
-          <CodeInput icon={codeIcon} />
+          <CodeInput icon={codeIcon} code={code} />
         </div>
         <div className="home-btn-box">
           <button className='home-btn-query' >
