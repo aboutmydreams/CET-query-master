@@ -77,7 +77,7 @@ export class Home extends React.Component {
 
   //查询成绩按钮点击
   handleQuery() {
-    /* window.location.href='/score'; */
+    
     if(this.state.noZkzh) {
       console.log('no zkzh');
       this.unfilledInfo('准考证号');
@@ -88,7 +88,8 @@ export class Home extends React.Component {
       console.log('no code');
       this.unfilledInfo('验证码');
     } else {
-      console.log('yes')
+      console.log('yes');
+      window.location.href='/score';
     }
   }
 

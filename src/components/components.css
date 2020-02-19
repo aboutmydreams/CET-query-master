@@ -65,6 +65,9 @@
     box-shadow: 0 0.3rem 0.5rem rgba(39, 39, 39, 0.16);
 }
 
+.score-drawback-box {
+    margin-bottom: 5vw;
+}
 
 .score-box {
     width: 76vw;

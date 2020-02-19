@@ -1,10 +1,18 @@
 import React from 'react';
 import WrittenExamLogo from '../assets/score-written-exam.png';
+import drawbackIcon from '../assets/score-drawback.png';
 
 export class Score extends React.Component {
+
+  drawback() {
+    window.location.href='/'
+  }
     render() {
       return (
         <div className="score-box" >
+          <div className="score-drawback-box" onClick={this.drawback} >
+            <img src={drawbackIcon} />
+          </div>
           <div className="logo">
             <img src={WrittenExamLogo} />
           </div>
