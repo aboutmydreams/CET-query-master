@@ -9,14 +9,23 @@ import code from '../assets/code.png'
 import Miracle from 'incu-webview'
 
 
-
-
 import { Input, CodeInput } from './input';
 import './components.css';
 
+//incu-webview
+const isApp = Miracle.isApp();
+console.log(isApp);
 
-const isApp = Miracle.isApp()
-console.log(isApp)
+// get info of student
+const onAppReady = Miracle.onAppReady(() => {
+  const res = Miracle.getData();
+  const info = res.user.profile.entireProfile.base_info;
+  console.log("=======================")
+  console.log("学号:"+info.xh)
+  console.log("姓名:"+info.xm)
+})
+
+
 
 export class Home extends React.Component {
   render() {
