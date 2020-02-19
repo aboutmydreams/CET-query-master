@@ -20,6 +20,8 @@ html body {
 .score {
   margin: 2vh auto;
   padding-top: 20vw;
+  position: absolute;
+  top: 0;
   background: url('./assets/zkzh-bg.png')  25%/10% no-repeat;
   background-size: contain;
   background-attachment: fixed;
