@@ -77,7 +77,6 @@ export class Home extends React.Component {
 
   //查询成绩按钮点击
   handleQuery() {
-    
     if(this.state.noZkzh) {
       console.log('no zkzh');
       this.unfilledInfo('准考证号');
@@ -135,6 +134,7 @@ export class Home extends React.Component {
     });
   }
 
+  //(临时)查找准考证号成功后的提示
   zkzhInfo() {
     Modal.info({
       icon: 'check',
@@ -143,8 +143,8 @@ export class Home extends React.Component {
       content: (
         <div>
           <p>姓名: 张三 </p>
-          <p>口语准考证号: &nbsp;&nbsp;A37927487824</p>
-          <p>笔试准考证号: &nbsp;&nbsp;283975458948</p>
+          <p>您的口语准考证号为: &nbsp;&nbsp;A37927487824</p>
+          <p>您的笔试准考证号为: &nbsp;&nbsp;283975458948</p>
         </div>
       ),
       onOk() {
