@@ -48,10 +48,10 @@ export class Home extends React.Component {
   //查找准考证号按钮点击
   handleFindzkzh() {
     if(!this.state.isApp) {
-      this. notInAppInfo();
+      this.zkzhInfo();
     } else {
       console.log('in App');
-      window.location.href='/zkzhindex.html';
+      this.zkzhInfo();
     }
   }
 
@@ -68,7 +68,23 @@ export class Home extends React.Component {
         </div>
       ),
       onOk() {
-        window.location.href='/zkzh';//测试中使用的功能,上线后删去
+      },
+    });
+  }
+
+  zkzhInfo() {
+    Modal.info({
+      icon: 'check',
+      centered: true,
+      title: '获取成功',
+      content: (
+        <div>
+          <p>姓名: 张三 </p>
+          <p>口语准考证号: &nbsp;&nbsp;A37927487824</p>
+          <p>笔试准考证号: &nbsp;&nbsp;283975458948</p>
+        </div>
+      ),
+      onOk() {
       },
     });
   }

@@ -65,6 +65,40 @@
     box-shadow: 0 0.3rem 0.5rem rgba(39, 39, 39, 0.16);
 }
 
+
+.score-box {
+    width: 76vw;
+}
+
+.score-info-container {
+    padding-top: 5vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.score-info {
+    width: 91%;
+    padding-left: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: PingFang SC;
+}
+
+.score-line-container {
+    width: 9%;
+    height: inherit;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.score-line {
+    width: 1px;
+    height: 80%;
+    background-color: rgb(206, 206, 206);
+    border-radius: 1px;
+}
+
 .input-box, .input-code-box {
     height: 3rem;
     background-color: #fff;

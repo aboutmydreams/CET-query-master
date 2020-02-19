@@ -4,27 +4,17 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom"; //npm install react-router-dom (下载react router)
 
-import { Home } from './components/home'
+import { Home } from './components/home';
+import { Score } from './components/score';
 
 function Zkzh() {
   return (
     <div>
       <p>
         找回准考证号页面
-      </p>
-    </div>
-  )
-}
-
-function Score() {
-  return (
-    <div>
-      <p>
-        成绩显示页面
       </p>
     </div>
   )
