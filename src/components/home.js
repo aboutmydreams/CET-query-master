@@ -7,7 +7,7 @@ import codeIcon from '../assets/home-code-icon.png'
 import code from '../assets/code.png'
 
 //antd
-import { Modal, Button } from 'antd';
+import { Modal} from 'antd';
 
 import Miracle from 'incu-webview'
 
@@ -33,15 +33,60 @@ export class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isApp
+      isApp,
+      noName: true,
+      noZkzh: true,
+      noCode: true
     }
 
     this.handleFindzkzh = this.handleFindzkzh.bind(this);
+    this.handleZkzChange = this.handleZkzChange.bind(this);
+    this.handleCodeChange = this.handleCodeChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this); 
+    this.handleQuery = this.handleQuery.bind(this);
+  }
+
+  handleZkzChange(zkzh) {
+    console.log(zkzh);
+    const noZkzh = zkzh === '';
+    console.log(noZkzh);
+    this.setState({
+      noZkzh,
+      zkzh
+    })
+  }
+
+  handleNameChange(name) {
+    console.log(name);
+    const noName = name === '';
+    console.log(noName)
+    this.setState({
+      noName,
+      name
+    });
+  }
+
+  handleCodeChange(code) {
+    console.log(code);
+    const noCode = code === '';
+    this.setState({
+      noCode,
+      code
+    })
   }
 
   //查询成绩按钮点击
   handleQuery() {
-    window.location.href='/score';
+    /* window.location.href='/score'; */
+    if(this.state.noZkzh) {
+      console.log('no zkzh')
+    } else if(this.state.noName) {
+      console.log('no name')
+    } else if(this.state.noCode) {
+      console.log('no code');
+    } else {
+      console.log('yes')
+    }
   }
 
 
@@ -96,9 +141,9 @@ export class Home extends React.Component {
           <img src={logo} />
         </div>
         <div className="home-input-box">
-          <Input icon={zkzIcon} placeholder="输入准考证号" />
-          <Input icon={nameIcon} placeholder="输入姓名" />
-          <CodeInput icon={codeIcon} code={code} />
+          <Input icon={zkzIcon} onInputChange={this.handleZkzChange} placeholder="输入准考证号" />
+          <Input icon={nameIcon} placeholder="输入姓名" onInputChange={this.handleNameChange} />
+          <CodeInput icon={codeIcon} code={code} onInputChange={this.handleCodeChange} />
         </div>
         <div className="home-btn-box">
           <button className='home-btn-query' onClick={this.handleQuery}>

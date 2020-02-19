@@ -4,13 +4,26 @@ import axios from 'axios';
 
 
 export class Input extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      content: e.target.value
+    })
+
+    this.props.onInputChange(e.target.value);
+  }
+
   render() {
     return (
       <div className="input-box">
         <div className="input-icon-box">
           <img src={this.props.icon} />
         </div>
-        <input placeholder={this.props.placeholder}/>
+        <input placeholder={this.props.placeholder} onChange={this.handleChange}/>
       </div>
     )
   }
@@ -25,6 +38,7 @@ export class CodeInput extends React.Component {
 
     this.getCode =this.getCode.bind(this);
     this.changeCode =this.changeCode.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   getCode() {
@@ -49,6 +63,10 @@ export class CodeInput extends React.Component {
     console.log('chang end')
   }
 
+  handleChange(e) {
+    this.props.onInputChange(e.target.value);
+  }
+
   render() {
     const hasCode = this.state.hasCode;
     let codeButton;
@@ -65,7 +83,7 @@ export class CodeInput extends React.Component {
         <div className="input-icon-box">
           <img src={this.props.icon} />
         </div>
-        <input placeholder='验证码'/>
+        <input placeholder='验证码' onChange={this.handleChange} />
         {codeButton}
       </div>
     )
