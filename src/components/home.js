@@ -79,14 +79,31 @@ export class Home extends React.Component {
   handleQuery() {
     /* window.location.href='/score'; */
     if(this.state.noZkzh) {
-      console.log('no zkzh')
+      console.log('no zkzh');
+      this.unfilledInfo('准考证号');
     } else if(this.state.noName) {
       console.log('no name')
+      this.unfilledInfo('姓名');
     } else if(this.state.noCode) {
       console.log('no code');
+      this.unfilledInfo('验证码');
     } else {
       console.log('yes')
     }
+  }
+
+  unfilledInfo(item) {
+    Modal.info({
+      centered: true,
+      title: '错误',
+      content: (
+        <div>
+          <p>请填写{item}哦</p>
+        </div>
+      ),
+      onOk() {
+      },
+    });
   }
 
 
