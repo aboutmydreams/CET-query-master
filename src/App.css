@@ -3,7 +3,7 @@ html body {
 }
 
 
-.App {
+.home {
   margin: 2vh auto;
   background: url('./assets/home-bg.png')  25%/10% no-repeat;
   background-size: contain;
@@ -17,3 +17,15 @@ html body {
 }
 
 
+.zkzh {
+  margin: 2vh auto;
+  background: url('./assets/zkzh-bg.png')  25%/10% no-repeat;
+  background-size: contain;
+  background-attachment: fixed;
+  width: 100%;
+  height: 96vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

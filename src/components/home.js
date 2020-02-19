@@ -51,7 +51,7 @@ export class Home extends React.Component {
       this. notInAppInfo();
     } else {
       console.log('in App');
-      window.location.href='/zkzh';
+      window.location.href='/zkzhindex.html';
     }
   }
 
