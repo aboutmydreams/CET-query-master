@@ -6,10 +6,17 @@ import nameIcon from '../assets/home-name-icon.png';
 import codeIcon from '../assets/home-code-icon.png'
 import code from '../assets/code.png'
 
+import Miracle from 'incu-webview'
+
+
+
 
 import { Input, CodeInput } from './input';
 import './components.css';
 
+
+const isApp = Miracle.isApp()
+console.log(isApp)
 
 export class Home extends React.Component {
   render() {
