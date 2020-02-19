@@ -85,6 +85,10 @@
     margin-top: 3vh;
 }
 
+.input-icon-box img {
+    height: 1.1rem;
+}
+
 .input-box img {
     height: 0.9rem;
 }
