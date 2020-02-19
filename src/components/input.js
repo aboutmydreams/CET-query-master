@@ -54,7 +54,7 @@ export class CodeInput extends React.Component {
     let codeButton;
     if(hasCode) {
         codeButton = <button onClick = {this.changeCode}>
-                      <img className="input-code-img" src={this.state.code}/>
+                      <img className="input-code-img" src={this.props.code}/>
                     </button>;
     } else {
       codeButton =  <button className="input-code-btn" onClick = {this.getCode}>点此获取</button>;
