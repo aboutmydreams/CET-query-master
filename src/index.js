@@ -9,7 +9,7 @@ import axios from 'axios'
 //antd css
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
-/* axios.defaults.baseURL = 'http://47.103.220.76:80'
+axios.defaults.baseURL = 'http://47.103.220.76:80'
 
 // 全局axios拦截器设置
 axios.defaults.timeout = 5000;
@@ -20,7 +20,7 @@ axios.interceptors.request.use(
   err => {
     return Promise.reject(err)
   }
-) */
+)
 
 
 

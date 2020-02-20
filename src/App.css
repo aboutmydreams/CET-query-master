@@ -8,8 +8,8 @@ html body {
   background: url('./assets/home-bg.png')  25%/10% no-repeat;
   background-size: contain;
   background-attachment: fixed;
-  width: 100%;
-  height: 96vh;
+  width: 101%;
+  height: 98vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
