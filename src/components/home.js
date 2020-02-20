@@ -157,20 +157,23 @@ export class Home extends React.Component {
       if(this.state.useCode) {
         this.errorInfo('未填写验证码', '请填写验证码哦');
       } else {
+        console.log('no code use')
         this.queryAndShow();//这里还要处理!!!
       }
     } else {
-      this.setState({ //测试功能! 上线后删去
+      console.log('search')
+/*       this.setState({ //测试功能! 上线后删去
         showDrawer: true
-      })
+      }) */
       this.queryAndShow();//这里还要处理!!!!
     }
   }
 
   //查询成绩并展示
   async queryAndShow() {
+    console.log('start query')
     const res = await axios({
-      url:'api/code',
+      url:'api/cet/result',
       method:"post",
       params:{
         zkzh: this.state.zkzh,
@@ -179,8 +182,9 @@ export class Home extends React.Component {
         cookie: this.state.cookie
       }
     });
+    console.log(res);
     const status = res.data.status;
-    const data = res.data;
+    const data = res.data.data;
     if(status === 2) {
       this.setState({
         hasOral:true,
@@ -191,8 +195,8 @@ export class Home extends React.Component {
         listening: data.listening,
         reading: data.rading,
         translate: data.translate,
-        oralID: data.oralid,
-        orallevel: data.orallevel,
+        oralID: data.oralId,
+        orallevel: data.oralLevel,
         examType: data.examType
       });
       this.setState({
