@@ -118,11 +118,16 @@ export class Home extends React.Component {
             zkzh: this.state.zkzh
           }
         });
+        console.log(res);
         const status = res.data.status;
+        console.log(status);
         if (status === 1) {
-          const imgurl = res.data.img_url;
-          const cookie = res.data.cookie;
+          const data = res.data.data;
+          console.log(data);
+          const imgurl = data.img_url;
+          const cookie = data.cookie;
           this.setState({
+            hasCodeImg: true,
             imgurl,
             cookie
           })
@@ -132,62 +137,33 @@ export class Home extends React.Component {
             cookie,
             useCode: false
           });
-          this.errorInfo('无需验证码','当前无需验证码, 直接查询吧')
+          this.tipInfo('无需验证码','当前无需验证码, 直接查询吧')
         } else {
           this.errorInfo('未知错误','获取验证码失败, 重新加载页面试试吧')
         }
       } else {
         this.errorInfo('无需验证码','当前无需验证码, 直接查询吧!')
       }
-     /*  const res = await axios({
-        url:'api/code',
-        method:"get",
-        params:{
-          zkzh: this.state.zkzh
-        }
-      });
-      const status = res.data.status;
-      if (status === 1) {
-        const imgurl = res.data.img_url;
-        const cookie = res.data.cookie;
-        this.setState({
-          imgurl,
-          cookie
-        })
-      } else if (status === 2) {
-        const cookie = res.data.cookie;
-        this.setState({
-          cookie,
-          useCode: false
-        });
-        this.errorInfo('无需验证码','当前无需验证码, 直接查询吧')
-      } else {
-        this.errorInfo('未知错误','获取验证码失败, 重新加载页面试试吧')
-      } */
     }
   }
 
   //查询成绩按钮点击
   handleQuery() {
     if(this.state.noZkzh) {
-      console.log('no zkzh');
-      this.unfilledInfo('准考证号');
+      this.warningInfo('未填写准考证号','请填写准考证号哦')
     } else if(this.state.noName) {
-      console.log('no name')
-      this.unfilledInfo('姓名');
+      this.warningInfo('未填写姓名', '请填写姓名哦');
     } else if(this.state.noCode) {
-      console.log('no code');
       if(this.state.useCode) {
-        this.unfilledInfo('验证码');
+        this.errorInfo('未填写验证码', '请填写验证码哦');
       } else {
-        console.log('not use img');
-        this.queryAndShow();
+        this.queryAndShow();//这里还要处理!!!
       }
     } else {
       this.setState({ //测试功能! 上线后删去
         showDrawer: true
       })
-      this.queryAndShow();
+      this.queryAndShow();//这里还要处理!!!!
     }
   }
 
@@ -330,6 +306,33 @@ export class Home extends React.Component {
     }
   }
 
+  tipInfo(tittle, info) {
+    Modal.info({
+      centered: true,
+      title: tittle,
+      content: (
+        <div>
+          <p>{info}</p>
+        </div>
+      ),
+      onOk() {
+      },
+    });
+  }
+
+  warningInfo(tittle, info) {
+    Modal.warning({
+      centered: true,
+      title: tittle,
+      content: (
+        <div>
+          <p>{info}</p>
+        </div>
+      ),
+      onOk() {
+      },
+    });
+  }
 
   errorInfo(tittle, info) {
     Modal.error({
@@ -383,9 +386,9 @@ export class Home extends React.Component {
     const hasCode = this.state.hasCodeImg;
     let codeButton;
     if(hasCode) {
-        codeButton = <button onClick = {this.getCodeImgUrl}>
-                      <img className="input-code-img" src={this.state.imgurl}/>
-                    </button>;
+        codeButton =  <button onClick = {this.getCodeImgUrl}>
+                        <img className="input-code-img" src={this.state.imgurl}/>
+                      </button>;
     } else {
       codeButton =  <button className="input-code-btn" onClick = {this.getCodeImgUrl}>点此获取</button>;
     }
