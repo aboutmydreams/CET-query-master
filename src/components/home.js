@@ -267,14 +267,54 @@ export class Home extends React.Component {
   }
 
   //获取准考证号函数
-  async getzkzh() {
-    let token = JSON.stringify(Miracle.getData())!=='{}' ? Miracle.getData().user.token : '';
-    const res = await axios({
+  getzkzh() {
+    console.log('start searching.')
+    /* let token = JSON.stringify(Miracle.getData())!=='{}' ? Miracle.getData().user.token : ''; */
+    let token = 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4MjE5NDQ4NiwiZXhwIjoxNTgyMTk3NDg2fQ.eyJpZCI6IjUwNzI2OTAxOTAiLCJleHAiOjE1ODIxOTc0ODYsInhoIjoiNjEwOTExOTEzNyJ9.YE0eWyUpZrVmdaLkOjpHAKv9FSFg8MumsOECuFSFU9A';
+    /* const res = axios({
       url:'/api/cet/zkzh',
       method:"get",
       headers: { Authorization: token }
-    });
-    if(res.data.staus === 1){
+    }); */
+    axios({
+/*       url: "/api",
+      method: "get",
+      headers: { Authorization: token } */
+      url:'/topic',
+      method:"get",
+      params: {
+        pageSize: 5,
+        lastCursor: this.state.lastCursor
+      }
+    })
+      .then(res => {
+        console.log(res);
+        if(res.data.staus === 1){
+          const zkzh = res.data.data.zkzh
+          const name = res.data.data.xm
+          const examType = res.data.data.kslb.substring(2,4)
+          Modal.info({
+            centered: true,
+            title: '你的'+examType+'准考证号为:',
+            content: (
+              <div>
+                <p>{zkzh}</p>
+              </div>
+            ),
+            onOk() {
+            },
+          });
+        } else if(res.data.staus === 0) {
+          this.errorInfo('查询失败', '数据库连接错误,请尝试重新加载app')
+        } else {
+          this.errorInfo('查询失败', '四六级数据库无此人信息')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      });
+      console.log('获取结束')
+    /* if(res.data.staus === 1){
       const zkzh = res.data.data.zkzh
       const name = res.data.data.xm
       const examType = res.data.data.kslb.substring(2,4)
@@ -289,19 +329,38 @@ export class Home extends React.Component {
         onOk() {
         },
       });
-
     } else if(res.data.staus === 0) {
       this.errorInfo('查询失败', '数据库连接错误,请尝试重新加载app')
     } else {
       this.errorInfo('查询失败', '四六级数据库无此人信息')
-    }
+    } */
+  }
+
+
+  async getReadhub() {
+    console.log('function getHotTopic start');
+    let token = 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4MjE5NDQ4NiwiZXhwIjoxNTgyMTk3NDg2fQ.eyJpZCI6IjUwNzI2OTAxOTAiLCJleHAiOjE1ODIxOTc0ODYsInhoIjoiNjEwOTExOTEzNyJ9.YE0eWyUpZrVmdaLkOjpHAKv9FSFg8MumsOECuFSFU9A';
+    /* const res = await axios({
+      url:'/cet/zkzh',
+      method:"get",
+      headers: { Authorization: token }
+    }); */
+    axios.get('/api/cet/zkzh', 
+              {headers: { Authorization: token }} 
+              )
+              .then((res) => {
+                console.log('res', res)
+              })
   }
 
   //查找准考证号按钮点击
   handleFindzkzh() {
     if(!this.state.isApp) {
       this.notInAppInfo();
+      console.log('in App');//测试功能
+      this.getReadhub();
     } else {
+      console.log('in App')
       this.getzkzh();
     }
   }
