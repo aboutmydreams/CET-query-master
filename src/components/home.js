@@ -47,9 +47,21 @@ export class Home extends React.Component {
       noZkzh: true,
       zkzh: '',
       noCode: true,
-      useCode: true,
+      useCode: false,//上线后改为true
       hasCodeImg: false,
-      showDrawer: false
+      showDrawer: false,
+      hasOral: true,//上线后改为false
+      //测试中展示↓
+      ID: 26738468634,
+      name: '老八',
+      school: '南昌大学',
+      score: 423,
+      listening: 119,
+      reading: 125,
+      translate: 148,
+      oralID: 'L8666666666',
+      orallevel: 'A+',
+      examType: "CET4"
     }
 
     this.handleFindzkzh = this.handleFindzkzh.bind(this);
@@ -98,7 +110,37 @@ export class Home extends React.Component {
       console.log('nozkzh');
       this.errorInfo('错误', '要先输入准考证号才能获取验证码哦')
     } else {
-      const res = await axios({
+      if(this.state.useCode) {
+        this.errorInfo('无需验证码','当前无需验证码, 直接查询吧');
+        const res = await axios({
+          url:'api/code',
+          method:"get",
+          params:{
+            zkzh: this.state.zkzh
+          }
+        });
+        const status = res.data.status;
+        if (status === 1) {
+          const imgurl = res.data.img_url;
+          const cookie = res.data.cookie;
+          this.setState({
+            imgurl,
+            cookie
+          })
+        } else if (status === 2) {
+          const cookie = res.data.cookie;
+          this.setState({
+            cookie,
+            useCode: false
+          });
+          this.errorInfo('无需验证码','当前无需验证码, 直接查询吧')
+        } else {
+          this.errorInfo('未知错误','获取验证码失败, 重新加载页面试试吧')
+        }
+      } else {
+        this.errorInfo('无需验证码','当前无需验证码, 直接查询吧!')
+      }
+     /*  const res = await axios({
         url:'api/code',
         method:"get",
         params:{
@@ -122,7 +164,7 @@ export class Home extends React.Component {
         this.errorInfo('无需验证码','当前无需验证码, 直接查询吧')
       } else {
         this.errorInfo('未知错误','获取验证码失败, 重新加载页面试试吧')
-      }
+      } */
     }
   }
 
@@ -177,6 +219,9 @@ export class Home extends React.Component {
         oralID: data.oralid,
         orallevel: data.orallevel,
         examType: data.examType
+      });
+      this.setState({
+        showDrawer: true
       })
     } else if(status === 1) {
       this.setState({
@@ -186,18 +231,18 @@ export class Home extends React.Component {
         school: data.school,
         score: data.score,
         listening: data.listening,
-        reading: data.rading,
+        reading: data.reading,
         translate: data.translate,
         oralID: data.oralid,
         orallevel: data.orallevel,
         examType: data.examType
+      });
+      this.setState({
+        showDrawer: true
       })
     } else {
       this.errorInfo('查询失败', '请检查准考证号、姓名及验证码是否填写正确');
     }
-    this.setState({
-      showDrawer: true
-    })
   }
 
   //未填写项目时给出相应的提示
@@ -361,17 +406,16 @@ export class Home extends React.Component {
         >
           <div className="score">
             <Score  isDrawBack={this.isDrawback}
-                    name={'张三'}
-                    school={'南昌大学'}
-                    WrittenExamID={3829483247278}
-                    WrittenExamScore={432}
-                    listening={92}
-                    reading={87}
-                    reading={89}
-                    translate={98}
-                    hasOral={true}
-                    oralID={'L377247234736'}
-                    oralLevel={'A+'} />
+                    name={this.state.name}
+                    school={this.state.school}
+                    WrittenExamID={this.state.ID}
+                    WrittenExamScore={this.state.score}
+                    listening={this.state.listening}
+                    reading={this.state.reading}
+                    translate={this.state.translate}
+                    hasOral={this.state.hasOral}
+                    oralID={this.state.oralID}
+                    oralLevel={this.state.orallevel} />
           </div>
         </Drawer>
       </div>
