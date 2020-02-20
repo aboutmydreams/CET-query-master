@@ -23,7 +23,7 @@ export class Input extends React.Component {
         <div className="input-icon-box">
           <img src={this.props.icon} />
         </div>
-        <input placeholder={this.props.placeholder} onChange={this.handleChange}/>
+        <input placeholder={this.props.placeholder} onChange={this.handleChange} value={this.props.value} />
       </div>
     )
   }

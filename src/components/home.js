@@ -11,7 +11,7 @@ import { Score } from './score';
 import axios from 'axios';
 
 //antd
-import { Modal, Drawer } from 'antd';
+import { Modal, Drawer, Icon } from 'antd';
 
 import Miracle from 'incu-webview'
 
@@ -51,17 +51,6 @@ export class Home extends React.Component {
       hasCodeImg: false,
       showDrawer: false,
       hasOral: true,//上线后改为false
-      //测试中展示↓
-      ID: 26738468634,
-      name: '老八',
-      school: '南昌大学',
-      score: 423,
-      listening: 119,
-      reading: 125,
-      translate: 148,
-      oralID: 'L8666666666',
-      orallevel: 'A+',
-      examType: "CET4"
     }
 
     this.handleFindzkzh = this.handleFindzkzh.bind(this);
@@ -170,12 +159,18 @@ export class Home extends React.Component {
     const res = await axios({
       url:'api/cet/result',
       method:"post",
-      params:{
+      data: {
+          zkzh: this.state.zkzh,
+          v: this.state.code,
+          name: this.state.name,
+          cookie: this.state.cookie
+        }
+      /* data:{
         zkzh: this.state.zkzh,
         v: this.state.code,
         name: this.state.name,
         cookie: this.state.cookie
-      }
+      } */
     });
     console.log(res);
     const status = res.data.status;
@@ -252,7 +247,11 @@ export class Home extends React.Component {
       const zkzh = res.data.data[0].zkzh
       const name = res.data.data[0].xm
       const examType = res.data.data[0].kslb;
-      Modal.success({
+      this.setState({
+        nameValue: name,
+        zkzhValue: zkzh
+      })
+      /* Modal.success({
         centered: true,
         title: '查询成功!',
         content: (
@@ -263,6 +262,25 @@ export class Home extends React.Component {
         ),
         onOk() {
         },
+      }); */
+      Modal.confirm({
+        okText: '谢谢啦~',
+        cancelText: '不要帮我填写!',
+        icon:<Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+        title: '查询成功!',
+        content:  <div>
+                    <p>{name} :</p>
+                    <p>你的{examType}准考证号为:{zkzh}</p>
+                    <p>你的姓名和{examType}准考证号都已经帮你填好啦, 快去查询吧!</p>
+                  </div> ,
+        onOk() {
+        },
+        onCancel() {
+          this.setState({
+            nameValue: '',
+            zkzhValue: ''
+          })
+        },
       });
     } else if(res.data.status === 2 ) {
       const writtenExamzkzh = res.data.data[0].zkzh;
@@ -270,17 +288,31 @@ export class Home extends React.Component {
       const name = res.data.data[0].xm;
       const writtenExamType = res.data.data[0].kslb;
       const oralExamType = res.data.data[1].kslb;
-      Modal.success({
+      this.setState({
+        nameValue: name,
+        zkzhValue: writtenExamzkzh
+      })
+      Modal.confirm({
         centered: true,
+        okText: '谢谢啦~',
+        cancelText: '不要帮我填写!',
+        icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
         title: '查询成功!',
         content: (
           <div>
             <p>{name} :</p>
             <p>你的{writtenExamType}准考证号为:<br/>{writtenExamzkzh}</p>
             <p>你的{oralExamType}准考证号为:<br/>{oralExamzkzh}</p>
+            <p>你的姓名和{writtenExamType}准考证号已经帮你填写啦, 快去查询吧!</p>
           </div>
         ),
         onOk() {
+        },
+        onCancel() {
+          this.setState({
+            nameValue: '',
+            zkzhValue: ''
+          })
         },
       });
     }
@@ -290,6 +322,12 @@ export class Home extends React.Component {
       this.errorInfo('查询失败', '四六级数据库无此人信息')
     }
       console.log('获取结束')
+  }
+
+  hideModal() {
+    this.setState({
+      zkzhVisible: false
+    })
   }
 
 
@@ -397,8 +435,8 @@ export class Home extends React.Component {
           <img src={logo} />
         </div>
         <div className="home-input-box">
-          <Input icon={zkzIcon} onInputChange={this.handleZkzChange} placeholder="输入准考证号" />
-          <Input icon={nameIcon} placeholder="输入姓名" onInputChange={this.handleNameChange} />
+          <Input icon={zkzIcon} onInputChange={this.handleZkzChange} placeholder="输入准考证号" value={this.state.zkzhValue} />
+          <Input icon={nameIcon} placeholder="输入姓名" onInputChange={this.handleNameChange} value={this.state.nameValue} />
           {/* <CodeInput icon={codeIcon} code={code} getCode={this.getCode} onInputChange={this.handleCodeChange} /> */}
           <div className="input-code-box">
             <div className="input-icon-box">
