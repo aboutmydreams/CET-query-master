@@ -8,6 +8,7 @@ import axios from 'axios'
 
 //antd css
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import 'moment/locale/zh-cn';
 
 axios.defaults.baseURL = 'http://47.103.220.76:80'
 
