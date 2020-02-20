@@ -18,7 +18,7 @@ html body {
 
 
 .score {
-  margin: 2vh auto;
+  margin: 0 auto;
   padding-top: 20vw;
   top: 0;
   background: url('./assets/zkzh-bg.png')  25%/10% no-repeat;

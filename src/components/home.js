@@ -6,8 +6,12 @@ import nameIcon from '../assets/home-name-icon.png';
 import codeIcon from '../assets/home-code-icon.png'
 import code from '../assets/code.png'
 
+import { Score } from './score';
+
+import axios from 'axios';
+
 //antd
-import { Modal} from 'antd';
+import { Modal, Drawer } from 'antd';
 
 import Miracle from 'incu-webview'
 
@@ -18,14 +22,18 @@ import './components.css';
 const isApp = Miracle.isApp();
 console.log(isApp);
 
+
 // get info of student
 Miracle.onAppReady(() => {
   const res = Miracle.getData();
   const info = res.user.profile.entireProfile.base_info;
-  console.log("=======================")
-  console.log("学号:"+info.xh)
-  console.log("姓名:"+info.xm)
+  console.log("=======================");
+  console.log(res.user);
+  console.log(res.user.token);
+  console.log("学号:"+info.xh);
+  console.log("姓名:"+info.xm);
 })
+
 
 
 
@@ -36,14 +44,20 @@ export class Home extends React.Component {
       isApp,
       noName: true,
       noZkzh: true,
-      noCode: true
+      zkzh: '',
+      noCode: true,
+      useCode: true,
+      hasCodeImg: false,
+      showDrawer: false
     }
 
     this.handleFindzkzh = this.handleFindzkzh.bind(this);
     this.handleZkzChange = this.handleZkzChange.bind(this);
     this.handleCodeChange = this.handleCodeChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this); 
+    this.handleNameChange = this.handleNameChange.bind(this);
     this.handleQuery = this.handleQuery.bind(this);
+    this.getCodeImgUrl = this.getCodeImgUrl.bind(this);
+    this.isDrawback = this.isDrawback.bind(this);
   }
 
   handleZkzChange(zkzh) {
@@ -66,13 +80,44 @@ export class Home extends React.Component {
     });
   }
 
-  handleCodeChange(code) {
+  handleCodeChange(e) {
+    const code = e.target.value;
     console.log(code);
     const noCode = code === '';
     this.setState({
       noCode,
       code
     })
+  }
+
+
+  //获取验证码图片
+  async getCodeImgUrl() {
+    if(this.state.noZkzh) {
+      console.log('nozkzh')
+    } else {
+      const res = await axios({
+        url:'api/code',
+        method:"get",
+        params:{
+          zkzh: this.state.zkzh
+        }
+      });
+      const status = res.data.status;
+      if (status === 1) {
+        const imgurl = res.data.img_url;
+        this.setState({
+          imgurl
+        })
+      } else if (status === 2) {
+        this.setState({
+          useCode: false
+        });
+        this.errorInfo('无需验证码','当前无需验证码, 直接查询吧')
+      } else {
+        this.errorInfo('未知错误','获取验证码失败, 重新加载页面试试吧')
+      }
+    }
   }
 
   //查询成绩按钮点击
@@ -85,13 +130,25 @@ export class Home extends React.Component {
       this.unfilledInfo('姓名');
     } else if(this.state.noCode) {
       console.log('no code');
-      this.unfilledInfo('验证码');
+      if(this.state.useCode) {
+        this.unfilledInfo('验证码');
+      } else {
+        console.log('not use img');
+        this.queryAndShow();
+      }
     } else {
-      console.log('yes');
-      window.location.href='/score';
+      this.queryAndShow();
     }
   }
 
+  //查询成绩并展示
+  async queryAndShow() {
+    this.setState({
+      showDrawer: true
+    })
+  }
+
+  //未填写项目时给出相应的提示
   unfilledInfo(item) {
     Modal.info({
       centered: true,
@@ -106,15 +163,65 @@ export class Home extends React.Component {
     });
   }
 
+  isDrawback(isDrawback) {
+    this.setState({
+      showDrawer: !isDrawback
+    })
+  }
+
+  //获取准考证号函数
+  async getzkzh() {
+    let token = JSON.stringify(Miracle.getData())!=='{}' ? Miracle.getData().user.token : '';
+    const res = await axios({
+      url:'/api/cet/zkzh',
+      method:"get",
+      headers: { Authorization: token }
+    });
+    if(res.data.staus === 1){
+      const zkzh = res.data.data.zkzh
+      const name = res.data.data.xm
+      const examType = res.data.data.kslb.substring(2,4)
+      Modal.info({
+        centered: true,
+        title: '你的'+examType+'准考证号为:',
+        content: (
+          <div>
+            <p>{zkzh}</p>
+          </div>
+        ),
+        onOk() {
+        },
+      });
+
+    } else if(res.data.staus === 0) {
+      this.errorInfo('查询失败', '数据库连接错误,请尝试重新加载app')
+    } else {
+      this.errorInfo('查询失败', '四六级数据库无此人信息')
+    }
+  }
 
   //查找准考证号按钮点击
   handleFindzkzh() {
     if(!this.state.isApp) {
-      this.zkzhInfo();
+      this.notInAppInfo();
     } else {
-      console.log('in App');
-      this.zkzhInfo();
+      this.getzkzh();
     }
+  }
+
+
+  errorInfo(tittle, info) {
+    Modal.info({
+      centered: true,
+      title: tittle,
+      content: (
+        <div>
+          <p>{info}</p>
+        </div>
+      ),
+      onOk() {
+      },
+    });
   }
 
   //不在app时点击找回准考证号按钮后的提示框
@@ -126,7 +233,6 @@ export class Home extends React.Component {
         <div>
           <p>请在南大家园APP中使用此功能</p>
           <p>或前往四六级考试官网找回</p>
-          <p>测试中: 点击ok键进入准考证号页面</p>
         </div>
       ),
       onOk() {
@@ -153,6 +259,15 @@ export class Home extends React.Component {
   }
 
   render() {
+    const hasCode = this.state.hasCodeImg;
+    let codeButton;
+    if(hasCode) {
+        codeButton = <button onClick = {this.changeCode}>
+                      <img className="input-code-img" src={this.props.code}/>
+                    </button>;
+    } else {
+      codeButton =  <button className="input-code-btn" onClick = {this.getCodeImgUrl}>点此获取</button>;
+    }
     return (
       <div className="home-box" >
         <div className="logo">
@@ -161,7 +276,14 @@ export class Home extends React.Component {
         <div className="home-input-box">
           <Input icon={zkzIcon} onInputChange={this.handleZkzChange} placeholder="输入准考证号" />
           <Input icon={nameIcon} placeholder="输入姓名" onInputChange={this.handleNameChange} />
-          <CodeInput icon={codeIcon} code={code} onInputChange={this.handleCodeChange} />
+          {/* <CodeInput icon={codeIcon} code={code} getCode={this.getCode} onInputChange={this.handleCodeChange} /> */}
+          <div className="input-code-box">
+            <div className="input-icon-box">
+              <img src={this.props.icon} />
+            </div>
+            <input placeholder='验证码' onChange={this.handleCodeChange} />
+            {codeButton}
+          </div>
         </div>
         <div className="home-btn-box">
           <button className='home-btn-query' onClick={this.handleQuery}>
@@ -171,6 +293,24 @@ export class Home extends React.Component {
             <span>找回准考证号</span>
           </button>
         </div>
+        <Drawer
+          height='100%'
+          placement='bottom'
+          closable={false}
+          visible={this.state.showDrawer}
+          bodyStyle = {
+            {
+              backgroundColor: '#4b4b4b',
+              padding: 0,
+              width: "100%",
+              height: "100%"
+          }
+          }
+        >
+          <div className="score">
+            <Score isDrawBack={this.isDrawback} />  
+          </div>
+        </Drawer>
       </div>
     )
   }

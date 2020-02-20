@@ -41,8 +41,13 @@ export class CodeInput extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  getCode() {
-    console.log('get code')
+  async getCode() {
+    console.log('get code');
+    console.log(this.props.zkzh)
+    const res = await axios({
+      url:'/api/cet/result',
+      method:"get"
+    });
     this.setState({
       hasCode: true,
       codeImg: this.props.code
@@ -75,7 +80,7 @@ export class CodeInput extends React.Component {
                       <img className="input-code-img" src={this.props.code}/>
                     </button>;
     } else {
-      codeButton =  <button className="input-code-btn" onClick = {this.getCode}>点此获取</button>;
+      codeButton =  <button className="input-code-btn" onClick = {this.props.getCode}>点此获取</button>;
     }
 
     return (
