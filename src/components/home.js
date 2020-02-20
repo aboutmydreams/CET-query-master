@@ -4,7 +4,6 @@ import logo from '../assets/logo.png';
 import zkzIcon from '../assets/home-zkzh-icon.png';
 import nameIcon from '../assets/home-name-icon.png';
 import codeIcon from '../assets/home-code-icon.png'
-import code from '../assets/code.png'
 
 import { Score } from './score';
 
