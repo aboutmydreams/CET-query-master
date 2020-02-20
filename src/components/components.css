@@ -75,7 +75,7 @@
 }
 
 .score-info-container {
-    padding-top: 5vh;
+    padding-top: 2vh;
     display: flex;
     flex-direction: row;
 }
@@ -101,6 +101,10 @@
     height: 80%;
     background-color: rgb(206, 206, 206);
     border-radius: 1px;
+}
+
+.score-logo-oral img{
+    width: 25vw;
 }
 
 .input-box, .input-code-box {

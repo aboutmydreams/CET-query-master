@@ -48,7 +48,7 @@ export class Home extends React.Component {
       noCode: true,
       useCode: true,
       hasCodeImg: false,
-      showDrawer: false
+      showDrawer: true
     }
 
     this.handleFindzkzh = this.handleFindzkzh.bind(this);
@@ -94,7 +94,8 @@ export class Home extends React.Component {
   //获取验证码图片
   async getCodeImgUrl() {
     if(this.state.noZkzh) {
-      console.log('nozkzh')
+      console.log('nozkzh');
+      this.errorInfo('错误', '要先输入准考证号才能获取验证码哦')
     } else {
       const res = await axios({
         url:'api/code',
@@ -106,11 +107,15 @@ export class Home extends React.Component {
       const status = res.data.status;
       if (status === 1) {
         const imgurl = res.data.img_url;
+        const cookie = res.data.cookie;
         this.setState({
-          imgurl
+          imgurl,
+          cookie
         })
       } else if (status === 2) {
+        const cookie = res.data.cookie;
         this.setState({
+          cookie,
           useCode: false
         });
         this.errorInfo('无需验证码','当前无需验证码, 直接查询吧')
@@ -138,11 +143,24 @@ export class Home extends React.Component {
       }
     } else {
       this.queryAndShow();
+      this.setState({ //测试功能! 上线后删去
+        showDrawer: true
+      })
     }
   }
 
   //查询成绩并展示
   async queryAndShow() {
+    const res = await axios({
+      url:'api/code',
+      method:"post",
+      params:{
+        zkzh: this.state.zkzh,
+        v: this.state.code,
+        name: this.state.name,
+        cookie: this.state.cookie
+      }
+    });
     this.setState({
       showDrawer: true
     })
@@ -262,8 +280,8 @@ export class Home extends React.Component {
     const hasCode = this.state.hasCodeImg;
     let codeButton;
     if(hasCode) {
-        codeButton = <button onClick = {this.changeCode}>
-                      <img className="input-code-img" src={this.props.code}/>
+        codeButton = <button onClick = {this.getCodeImgUrl}>
+                      <img className="input-code-img" src={this.state.imgurl}/>
                     </button>;
     } else {
       codeButton =  <button className="input-code-btn" onClick = {this.getCodeImgUrl}>点此获取</button>;
@@ -308,7 +326,7 @@ export class Home extends React.Component {
           }
         >
           <div className="score">
-            <Score isDrawBack={this.isDrawback} />  
+            <Score isDrawBack={this.isDrawback} name={'张三'} school={'南昌大学'} WrittenExamID={3829483247278} WrittenExamScore={432} listening={92} reading={87} reading={89} translate={98} hasOral={true} oralID={'L377247234736'} oralLevel={'A+'} />  
           </div>
         </Drawer>
       </div>
