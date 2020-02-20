@@ -157,21 +157,16 @@ export class Home extends React.Component {
       if(this.state.useCode) {
         this.errorInfo('未填写验证码', '请填写验证码哦');
       } else {
-        console.log('no code use')
-        this.queryAndShow();//这里还要处理!!!
+        this.queryAndShow();
       }
     } else {
       console.log('search')
-/*       this.setState({ //测试功能! 上线后删去
-        showDrawer: true
-      }) */
-      this.queryAndShow();//这里还要处理!!!!
+      this.queryAndShow();
     }
   }
 
   //查询成绩并展示
   async queryAndShow() {
-    console.log('start query')
     const res = await axios({
       url:'api/cet/result',
       method:"post",
