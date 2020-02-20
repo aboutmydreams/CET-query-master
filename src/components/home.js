@@ -17,6 +17,7 @@ import Miracle from 'incu-webview'
 
 import { Input, CodeInput } from './input';
 import './components.css';
+import { findAllByAltText } from '@testing-library/react';
 
 //incu-webview
 const isApp = Miracle.isApp();
@@ -48,7 +49,7 @@ export class Home extends React.Component {
       noCode: true,
       useCode: true,
       hasCodeImg: false,
-      showDrawer: true
+      showDrawer: false
     }
 
     this.handleFindzkzh = this.handleFindzkzh.bind(this);
@@ -142,10 +143,10 @@ export class Home extends React.Component {
         this.queryAndShow();
       }
     } else {
-      this.queryAndShow();
       this.setState({ //测试功能! 上线后删去
         showDrawer: true
       })
+      this.queryAndShow();
     }
   }
 
@@ -161,7 +162,39 @@ export class Home extends React.Component {
         cookie: this.state.cookie
       }
     });
-    
+    const status = res.data.status;
+    const data = res.data;
+    if(status === 2) {
+      this.setState({
+        hasOral:true,
+        ID: data.ID,
+        name: data.name,
+        school: data.school,
+        score: data.score,
+        listening: data.listening,
+        reading: data.rading,
+        translate: data.translate,
+        oralID: data.oralid,
+        orallevel: data.orallevel,
+        examType: data.examType
+      })
+    } else if(status === 1) {
+      this.setState({
+        hasOral: false,
+        ID: data.ID,
+        name: data.name,
+        school: data.school,
+        score: data.score,
+        listening: data.listening,
+        reading: data.rading,
+        translate: data.translate,
+        oralID: data.oralid,
+        orallevel: data.orallevel,
+        examType: data.examType
+      })
+    } else {
+      this.errorInfo('查询失败', '请检查准考证号、姓名及验证码是否填写正确');
+    }
     this.setState({
       showDrawer: true
     })
