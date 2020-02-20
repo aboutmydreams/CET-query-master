@@ -47,7 +47,7 @@ export class Home extends React.Component {
       noZkzh: true,
       zkzh: '',
       noCode: true,
-      useCode: false,//上线后改为true
+      useCode: true,//上线后改为true
       hasCodeImg: false,
       showDrawer: false,
       hasOral: true,//上线后改为false
@@ -111,9 +111,8 @@ export class Home extends React.Component {
       this.errorInfo('错误', '要先输入准考证号才能获取验证码哦')
     } else {
       if(this.state.useCode) {
-        this.errorInfo('无需验证码','当前无需验证码, 直接查询吧');
         const res = await axios({
-          url:'api/code',
+          url:'api/cet/result',
           method:"get",
           params:{
             zkzh: this.state.zkzh
@@ -268,30 +267,49 @@ export class Home extends React.Component {
 
   //获取准考证号函数
   async getzkzh() {
-    console.log('start searching.')
     let token = JSON.stringify(Miracle.getData())!=='{}' ? Miracle.getData().user.token : '';
     const res =await axios({
       url:'/api/cet/zkzh',
       method:"get",
       headers: { Authorization: token }
     }); 
-    console.log(res);
-    if(res.data.staus === 1){
-      const zkzh = res.data.data.zkzh
-      const name = res.data.data.xm
-      const examType = res.data.data.kslb.substring(2,4)
-      Modal.info({
+    if(res.data.status === 1){
+      const zkzh = res.data.data[0].zkzh
+      const name = res.data.data[0].xm
+      const examType = res.data.data[0].kslb;
+      Modal.success({
         centered: true,
-        title: '你的'+examType+'准考证号为:',
+        title: '查询成功!',
         content: (
           <div>
-            <p>{zkzh}</p>
+            <p>{name} :</p>
+            <p>你的{examType}准考证号为:{zkzh}</p>
           </div>
         ),
         onOk() {
         },
       });
-    } else if(res.data.staus === 0) {
+    } else if(res.data.status === 2 ) {
+      const writtenExamzkzh = res.data.data[0].zkzh;
+      const oralExamzkzh = res.data.data[1].zkzh;
+      const name = res.data.data[0].xm;
+      const writtenExamType = res.data.data[0].kslb;
+      const oralExamType = res.data.data[1].kslb;
+      Modal.success({
+        centered: true,
+        title: '查询成功!',
+        content: (
+          <div>
+            <p>{name} :</p>
+            <p>你的{writtenExamType}准考证号为:<br/>{writtenExamzkzh}</p>
+            <p>你的{oralExamType}准考证号为:<br/>{oralExamzkzh}</p>
+          </div>
+        ),
+        onOk() {
+        },
+      });
+    }
+    else if(res.data.status === 0) {
       this.errorInfo('查询失败', '数据库连接错误,请尝试重新加载app')
     } else {
       this.errorInfo('查询失败', '四六级数据库无此人信息')
@@ -300,16 +318,6 @@ export class Home extends React.Component {
   }
 
 
-  async getReadhub() {
-    console.log('function getHotTopic start');
-    let token = 'eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4MjE5NDQ4NiwiZXhwIjoxNTgyMTk3NDg2fQ.eyJpZCI6IjUwNzI2OTAxOTAiLCJleHAiOjE1ODIxOTc0ODYsInhoIjoiNjEwOTExOTEzNyJ9.YE0eWyUpZrVmdaLkOjpHAKv9FSFg8MumsOECuFSFU9A';
-    const res = await axios({
-      url:'/cet/zkzh',
-      method:"get",
-      headers: { Authorization: token }
-    });
-  }
-
   //查找准考证号按钮点击
   handleFindzkzh() {
     if(!this.state.isApp) {
@@ -317,14 +325,14 @@ export class Home extends React.Component {
       console.log('in App');//测试功能
       this.getzkzh();
     } else {
-      console.log('in App')
+      console.log('in App');
       this.getzkzh();
     }
   }
 
 
   errorInfo(tittle, info) {
-    Modal.info({
+    Modal.error({
       centered: true,
       title: tittle,
       content: (
