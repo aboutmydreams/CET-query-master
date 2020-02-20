@@ -279,7 +279,7 @@ export class Home extends React.Component {
           {/* <CodeInput icon={codeIcon} code={code} getCode={this.getCode} onInputChange={this.handleCodeChange} /> */}
           <div className="input-code-box">
             <div className="input-icon-box">
-              <img src={this.props.icon} />
+              <img src={codeIcon} />
             </div>
             <input placeholder='验证码' onChange={this.handleCodeChange} />
             {codeButton}
