@@ -161,6 +161,7 @@ export class Home extends React.Component {
         cookie: this.state.cookie
       }
     });
+    
     this.setState({
       showDrawer: true
     })
@@ -326,7 +327,18 @@ export class Home extends React.Component {
           }
         >
           <div className="score">
-            <Score isDrawBack={this.isDrawback} name={'张三'} school={'南昌大学'} WrittenExamID={3829483247278} WrittenExamScore={432} listening={92} reading={87} reading={89} translate={98} hasOral={true} oralID={'L377247234736'} oralLevel={'A+'} />  
+            <Score  isDrawBack={this.isDrawback}
+                    name={'张三'}
+                    school={'南昌大学'}
+                    WrittenExamID={3829483247278}
+                    WrittenExamScore={432}
+                    listening={92}
+                    reading={87}
+                    reading={89}
+                    translate={98}
+                    hasOral={true}
+                    oralID={'L377247234736'}
+                    oralLevel={'A+'} />
           </div>
         </Drawer>
       </div>
