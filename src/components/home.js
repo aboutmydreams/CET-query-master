@@ -59,6 +59,71 @@ export class Home extends React.Component {
     this.handleQuery = this.handleQuery.bind(this);
     this.getCodeImgUrl = this.getCodeImgUrl.bind(this);
     this.isDrawback = this.isDrawback.bind(this);
+    this.autoQuery = this.autoQuery.bind(this);
+  }
+
+  componentDidMount() {
+    //自动查询
+    this.autoQuery();
+  }
+
+  async autoQuery() {
+    let token = JSON.stringify(Miracle.getData())!=='{}' ? Miracle.getData().user.token : '';
+    const res =await axios({
+      url:'/api/cet/zkzh',
+      method:"get",
+      headers: { Authorization: token }
+    }); 
+    if(res.data.status === 1 ||res.data.data === 2 ){ // 查询成功,可获取准考证好
+      const zkzh = res.data.data[0].zkzh
+      const name = res.data.data[0].xm
+      const examType = res.data.data[0].kslb;
+      this.setState({
+        name,
+        zkzh
+      })
+      const res = await axios({
+        url:'api/cet/result',
+        method:"get",
+        params:{
+          zkzh
+        }
+      });
+      const status = res.data.status;
+      if(status === 2) { //无验证码,可以实现自动查询
+        const data = res.data.data;
+        console.log(data);
+        const imgurl = data.img_url;
+        const cookie = data.cookie;
+        this.setState({
+          imgurl,
+          cookie
+        });
+        Modal.confirm({
+          okText: '一键查询',
+          cancelText: '我自己查吧',
+          icon:<Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+          title: '自动查询',
+          content:  <div>
+                      <p>{name} :</p>
+                      <p>当前已获取你的信息,可以一键查询,是否一键查询?</p>
+                    </div> ,
+          onOk() { //查询
+            this.queryAndShow();
+          },
+          onCancel() { //清空state
+            this.setState({
+              name: '',
+              zkzh: '',
+              imgUrl: '',
+              cookie: ''
+            })
+          },
+        });
+      }
+    } else { //有验证码或其他情况,无法自动查询
+      console.log('can\'t autoQuery')
+    }
   }
 
   handleZkzChange(zkzh) {
@@ -109,7 +174,7 @@ export class Home extends React.Component {
         console.log(res);
         const status = res.data.status;
         console.log(status);
-        if (status === 1) {
+        if (status === 1) { //有验证码
           const data = res.data.data;
           console.log(data);
           const imgurl = data.img_url;
@@ -119,7 +184,7 @@ export class Home extends React.Component {
             imgurl,
             cookie
           })
-        } else if (status === 2) {
+        } else if (status === 2) { //无需验证码
           const cookie = res.data.cookie;
           this.setState({
             cookie,
@@ -164,12 +229,6 @@ export class Home extends React.Component {
           name: this.state.name,
           cookie: this.state.cookie
         }
-      /* data:{
-        zkzh: this.state.zkzh,
-        v: this.state.code,
-        name: this.state.name,
-        cookie: this.state.cookie
-      } */
     });
     console.log(res);
     const status = res.data.status;
@@ -242,7 +301,7 @@ export class Home extends React.Component {
       method:"get",
       headers: { Authorization: token }
     }); 
-    if(res.data.status === 1){
+    if(res.data.status === 1){ // 查询成功,只有笔试
       const zkzh = res.data.data[0].zkzh
       const name = res.data.data[0].xm
       const examType = res.data.data[0].kslb;
@@ -281,7 +340,7 @@ export class Home extends React.Component {
           })
         },
       });
-    } else if(res.data.status === 2 ) {
+    } else if(res.data.status === 2 ) { // 查询成功, 笔试+口试
       const writtenExamzkzh = res.data.data[0].zkzh;
       const oralExamzkzh = res.data.data[1].zkzh;
       const name = res.data.data[0].xm;
