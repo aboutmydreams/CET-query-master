@@ -492,26 +492,29 @@ export class Home extends React.Component {
         <div className="logo">
           <img src={logo} />
         </div>
-        <div className="home-input-box">
-          <Input icon={zkzIcon} onInputChange={this.handleZkzChange} placeholder="输入准考证号" value={this.state.zkzhValue} />
-          <Input icon={nameIcon} placeholder="输入姓名" onInputChange={this.handleNameChange} value={this.state.nameValue} />
-          {/* <CodeInput icon={codeIcon} code={code} getCode={this.getCode} onInputChange={this.handleCodeChange} /> */}
-          <div className="input-code-box">
-            <div className="input-icon-box">
-              <img src={codeIcon} />
+        <div className="home-content">
+          <div className="home-input-box">
+            <Input icon={zkzIcon} onInputChange={this.handleZkzChange} placeholder="输入准考证号" value={this.state.zkzhValue} />
+            <Input icon={nameIcon} placeholder="输入姓名" onInputChange={this.handleNameChange} value={this.state.nameValue} />
+            {/* <CodeInput icon={codeIcon} code={code} getCode={this.getCode} onInputChange={this.handleCodeChange} /> */}
+            <div className="input-code-box">
+              <div className="input-icon-box">
+                <img src={codeIcon} />
+              </div>
+              <input placeholder='验证码' onChange={this.handleCodeChange} />
+              {codeButton}
             </div>
-            <input placeholder='验证码' onChange={this.handleCodeChange} />
-            {codeButton}
+          </div>
+          <div className="home-btn-box">
+            <button className='home-btn-query' onClick={this.handleQuery}>
+              <span>查询成绩</span>
+            </button>
+            <button className='home-btn-toFind' onClick={this.handleFindzkzh} >
+              <span>找回准考证号</span>
+            </button>
           </div>
         </div>
-        <div className="home-btn-box">
-          <button className='home-btn-query' onClick={this.handleQuery}>
-            <span>查询成绩</span>
-          </button>
-          <button className='home-btn-toFind' onClick={this.handleFindzkzh} >
-            <span>找回准考证号</span>
-          </button>
-        </div>
+        
         <Drawer
           height='100%'
           placement='bottom'
